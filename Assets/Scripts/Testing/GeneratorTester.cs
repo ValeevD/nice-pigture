@@ -19,11 +19,52 @@ public class GeneratorTester : MonoBehaviour
         // int coinNumber = 5;
         // int maxSolutionValue = 80;
 
-        //solutionGenerator.GenerateSolution(coinDiap, coinNumber, maxSolutionValue);
+        // solutionGenerator.GenerateSolution(coinDiap, coinNumber, maxSolutionValue);
         var chosenCoins = solutionGenerator.GenerateCoinsFromDiap(coinMin, coinMax, coinNumber);
-        List<int>[] allSolutions = solutionGenerator.FindAllSolutions(chosenCoins, maxSolutionValue);
+        // List<int> chosenCoins = new List<int>();
 
+        // chosenCoins.Add(8);
+        // chosenCoins.Add(7);
+        // chosenCoins.Add(4);
+
+        Solution[] allSolutions = solutionGenerator.FindAllSolutionsNew(chosenCoins, maxSolutionValue);
+
+        Debug.Log($"Coins {LogList(chosenCoins)}");
         LogAllSolutions(allSolutions);
+
+        // Solution sol = new Solution(5);
+
+        // List<int> s1 = new List<int>();
+        // s1.Add(1);
+        // s1.Add(2);
+        // s1.Add(2);
+
+        // List<int> s2 = new List<int>();
+        // s2.Add(2);
+        // s2.Add(2);
+        // s2.Add(1);
+
+        // List<int> s3 = new List<int>();
+        // s3.Add(2);
+        // s3.Add(1);
+        // s3.Add(2);
+
+        // List<int> s4 = new List<int>();
+        // s4.Add(3);
+        // s4.Add(2);
+
+        // sol.Sequences.Add(s1);
+        // sol.Sequences.Add(s2);
+        // sol.Sequences.Add(s3);
+        // sol.Sequences.Add(s4);
+
+        // Debug.Log("+++BEFORE CUT+++");
+        // Debug.Log(sol.ToString());
+        // Debug.Log("+++AFTER CUT+++");
+
+        // sol.CutSolution();
+        // Debug.Log(sol.ToString());
+
     }
 
     public string LogList<T>(List<T> list)
@@ -54,5 +95,12 @@ public class GeneratorTester : MonoBehaviour
         }
 
         Debug.Log(builder.ToString());
+    }
+
+    public void LogAllSolutions(Solution[] allSolutions){
+        foreach(var l in allSolutions)
+        {
+            Debug.Log(l.ToString());
+        }
     }
 }

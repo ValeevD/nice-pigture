@@ -62,12 +62,44 @@ public class SolutionGenerator
         return allSolutions;
     }
 
+    public Solution[] FindAllSolutionsNew(List<int> coins, int maxSolutionValue)
+    {
+        Solution[] allSolutions = new Solution[maxSolutionValue+1];
+
+        for(int i = 0; i < maxSolutionValue + 1; ++i)
+            allSolutions[i] = new Solution(i);
+
+        for(int i = 1; i <= maxSolutionValue; ++i)
+        {
+            Solution curSolution = allSolutions[i];
+
+            foreach(int coin in coins)
+            {
+                if(coin == i){
+                    curSolution.AddSolutionWithOneCoin(coin);
+                    continue;
+                }
+
+                int curSum = i - coin;
+
+                if(curSum < 1 || !allSolutions[curSum].HasSolution)
+                    continue;
+
+                curSolution.FillFromSolutionWithCoin(allSolutions[curSum], coin);
+            }
+
+            curSolution.CutSolution();
+        }
+
+        return allSolutions;
+    }
+
 
     public List<int> GenerateCoinsFromDiap(int coinMin, int coinMax, int coinNumber)
     {
         int curCoin = coinMin;
 
-        int[] coins = new int[coinMax - coinMin + 2];
+        int[] coins = new int[coinMax - coinMin];
 
         while(curCoin < coinMax)
             coins[curCoin - coinMin] = curCoin++;
@@ -83,7 +115,6 @@ public class SolutionGenerator
             // if(cn != 2 && cn != 5)
             chosenCoins.Add(cn);
         }
-
 
         return chosenCoins;
     }
