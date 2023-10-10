@@ -236,10 +236,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28225abb528836c4f8e3614eb6588077, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinMin: 3
-  coinMax: 24
-  coinNumber: 6
-  maxSolutionValue: 46
+  coinMin: 5
+  coinMax: 44
+  coinNumber: 7
+  maxSolutionValue: 240
 --- !u!4 &574871547
 Transform:
   m_ObjectHideFlags: 0

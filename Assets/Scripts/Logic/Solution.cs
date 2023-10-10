@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using Unity.VisualScripting;
 using UnityEditor.TerrainTools;
 
 public class Solution
@@ -8,7 +9,8 @@ public class Solution
     public int Sum;
     public int MinCoinNumber;
     public List<List<int>> Sequences;
-    private List<int> _differentCoins;
+    public List<int> DifferentLegnghts;
+    public List<int> DifferentCoins;
 
     public bool HasSolution => Sequences.Count != 0;
 
@@ -16,6 +18,8 @@ public class Solution
     {
         Sum = _Sum;
         Sequences = new List<List<int>>();
+        DifferentLegnghts = new List<int>();
+        DifferentCoins = new List<int>();
     }
 
     public void FillFromSolutionWithCoin(Solution sol, int newCoin)
@@ -75,15 +79,24 @@ public class Solution
 
             ++i;
         }
+
+        FillDifferentCoins();
     }
 
     private void FillDifferentCoins()
     {
-        _differentCoins.Clear();
+        DifferentLegnghts.Clear();
+        HashSet<int> existedCoins = new HashSet<int>();
 
         foreach(List<int> l in Sequences){
-            HashSet<int> existedCoins = new HashSet<int>(l);
-            _differentCoins.Add(existedCoins.Count);
+            existedCoins.Add(l.Count);
+        }
+
+        DifferentLegnghts.AddRange(existedCoins);
+
+        foreach(List<int> l in Sequences){
+            existedCoins = new HashSet<int>(l);
+            DifferentCoins.Add(existedCoins.Count);
         }
     }
 
@@ -91,16 +104,25 @@ public class Solution
     {
         StringBuilder sb = new StringBuilder();
 
-        sb.Append($"--------------- SUM {Sum} SOLUTION ---------------\n");
+        sb.Append($"--------------- SUM {Sum} SOLUTION");
+        sb.Append($" DIFFERENT LENGHTS ----------------");
+
+        foreach(var d in DifferentLegnghts)
+            sb.Append($"{d}, ");
+
+        sb.Append($" [COUNT {DifferentLegnghts.Count}]----------------");
+
+        sb.Append("---------------\n");
 
         for(int i = 0; i < Sequences.Count; ++i){
             foreach(int n in Sequences[i])
                 sb.Append($"{n.ToString()}\t");
 
-            sb.Append($" --> coins: {Sequences[i].Count}\n");
+            sb.Append($" --> coins: {Sequences[i].Count} ({DifferentCoins[i]})\n");
         }
 
-        sb.Append($"---------------------------------------------");
+
+
 
         return sb.ToString();
     }
