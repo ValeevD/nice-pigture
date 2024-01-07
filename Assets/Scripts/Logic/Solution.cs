@@ -120,10 +120,6 @@ public class Solution
 
             sb.Append($" --> coins: {Sequences[i].Count} ({DifferentCoins[i]})\n");
         }
-
-
-
-
         return sb.ToString();
     }
 }
