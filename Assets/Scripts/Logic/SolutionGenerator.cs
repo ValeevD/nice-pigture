@@ -4,65 +4,17 @@ using System.Collections.Generic;
 
 public class SolutionGenerator
 {
-    public Solution GenerateSolution(int coinMin, int coinMax, int coinNumber, int maxSolutionValue)
+    public List<Solution> allSolutions;
+    public List<int> allCoins;
+
+    public void GenerateSolutions(int coinMin, int coinMax, int coinNumber, int maxSolutionValue)
     {
-        List<int> chosenCoins = GenerateCoinsFromDiap(coinMin, coinMax, coinNumber);
+        allCoins = GenerateCoinsFromDiap(coinMin, coinMax, coinNumber);
 
-        List<int>[] allSolutions = FindAllSolutions(chosenCoins, maxSolutionValue);
-
-        return null;
+        allSolutions = FindAllSolutionsNew(allCoins, maxSolutionValue);
     }
 
-    public List<int>[] FindAllSolutions(List<int> coins, int maxSolutionValue)
-    {
-        List<int>[] allSolutions = new List<int>[maxSolutionValue+1];
-
-        for(int i = 0; i < maxSolutionValue + 1; ++i)
-            allSolutions[i] = new List<int>();
-
-        for(int i = 1; i <= maxSolutionValue; ++i)
-        {
-            int bestCoinNumber = maxSolutionValue + 1;
-            int usedSolution = -1;
-            int usedCoin = 0;
-
-            foreach(int coin in coins)
-            {
-                if(coin == i){
-                    bestCoinNumber = 1;
-                    usedCoin = coin;
-                    break;
-                }
-
-                int curSum = i - coin;
-
-                if(curSum < 1 || allSolutions[curSum].Count == 0)
-                    continue;
-
-                if(allSolutions[curSum].Count + 1 < bestCoinNumber)
-                {
-                    usedSolution = curSum;
-                    usedCoin = coin;
-                    bestCoinNumber = allSolutions[curSum].Count + 1;
-                }
-            }
-
-            if(usedCoin == 0)
-                continue;
-
-            List<int> curSol = allSolutions[i];
-
-            if(bestCoinNumber != 1)
-                foreach(int n in allSolutions[usedSolution])
-                    curSol.Add(n);
-
-            curSol.Add(usedCoin);
-        }
-
-        return allSolutions;
-    }
-
-    public Solution[] FindAllSolutionsNew(List<int> coins, int maxSolutionValue)
+    public List<Solution> FindAllSolutionsNew(List<int> coins, int maxSolutionValue)
     {
         Solution[] allSolutions = new Solution[maxSolutionValue+1];
 
@@ -91,7 +43,8 @@ public class SolutionGenerator
             curSolution.CutSolution();
         }
 
-        return allSolutions;
+        List<Solution> solves = new List<Solution>(allSolutions);
+        return solves;
     }
 
 

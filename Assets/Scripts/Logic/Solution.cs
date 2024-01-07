@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Unity.VisualScripting;
 using UnityEditor.TerrainTools;
 
-public class Solution
+public class Solution: IDisposable
 {
     public int Sum;
     public int MinCoinNumber;
@@ -20,6 +21,14 @@ public class Solution
         Sequences = new List<List<int>>();
         DifferentLegnghts = new List<int>();
         DifferentCoins = new List<int>();
+    }
+
+    public void Dispose()
+    {
+        DifferentCoins.Clear();
+        DifferentLegnghts.Clear();
+        foreach(var l in Sequences)
+            l.Clear();
     }
 
     public void FillFromSolutionWithCoin(Solution sol, int newCoin)

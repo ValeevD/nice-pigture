@@ -17,4 +17,9 @@ public class CoinView : MonoBehaviour
         _coinValue = newValue;
         textMesh.text = _coinValue.ToString();
     }
+
+    public void SetPosition(Vector2 newPosition)
+    {
+        transform.position = newPosition;
+    }
 }
