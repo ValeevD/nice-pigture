@@ -4,24 +4,36 @@ using System.Collections.Generic;
 
 public class SolutionGenerator
 {
-    public List<Solution> allSolutions;
-    public List<int> allCoins;
+    private int _coinMin;
+    private int _coinMax;
+    private int _coinNumber;
+    private int _maxSolutionValue;
 
-    public void GenerateSolutions(int coinMin, int coinMax, int coinNumber, int maxSolutionValue)
+    public SolutionGenerator(int coinMin, int coinMax, int coinNumber, int maxSolutionValue)
     {
-        allCoins = GenerateCoinsFromDiap(coinMin, coinMax, coinNumber);
-
-        allSolutions = FindAllSolutionsNew(allCoins, maxSolutionValue);
+        _coinMin = coinMin;
+        _coinMax = coinMax;
+        _coinNumber = coinNumber;
+        _maxSolutionValue = maxSolutionValue;
     }
 
-    public List<Solution> FindAllSolutionsNew(List<int> coins, int maxSolutionValue)
+    public (List<int>, List<Solution>) GenerateSolutions()
     {
-        Solution[] allSolutions = new Solution[maxSolutionValue+1];
+        List<int> allCoins = GenerateCoinsFromDiap(_coinMin, _coinMax, _coinNumber);
 
-        for(int i = 0; i < maxSolutionValue + 1; ++i)
+        List<Solution> allSolutions = FindAllSolutionsNew(allCoins, _maxSolutionValue);
+
+        return (allCoins, allSolutions);
+    }
+
+    public List<Solution> FindAllSolutionsNew(List<int> coins, int _maxSolutionValue)
+    {
+        Solution[] allSolutions = new Solution[_maxSolutionValue+1];
+
+        for(int i = 0; i < _maxSolutionValue + 1; ++i)
             allSolutions[i] = new Solution(i);
 
-        for(int i = 1; i <= maxSolutionValue; ++i)
+        for(int i = 1; i <= _maxSolutionValue; ++i)
         {
             Solution curSolution = allSolutions[i];
 
@@ -48,24 +60,42 @@ public class SolutionGenerator
     }
 
 
-    public List<int> GenerateCoinsFromDiap(int coinMin, int coinMax, int coinNumber)
+    public List<int> GenerateCoinsFromDiap(int _coinMin, int _coinMax, int _coinNumber)
     {
-        int curCoin = coinMin;
+        int curCoin = _coinMin;
 
-        int[] coins = new int[coinMax - coinMin];
+        int[] coins = new int[_coinMax - _coinMin];
 
-        while(curCoin < coinMax)
-            coins[curCoin - coinMin] = curCoin++;
+        while(curCoin < _coinMax)
+            coins[curCoin - _coinMin] = curCoin++;
 
         Shuffle(coins);
 
         curCoin = 0;
         List<int> chosenCoins = new List<int>();
 
-        while(curCoin < coinNumber)
+        while(curCoin < _coinNumber)
         {
             int cn = coins[curCoin++];
-            // if(cn != 2 && cn != 5)
+
+            bool notValid = false;
+
+            foreach(var c1 in chosenCoins)
+            {
+                if(notValid)
+                    break;
+
+                foreach(var c2 in chosenCoins)
+                    if(cn == c1 + c2 || c1 == cn + c2 || c2 == c1 + cn)
+                    {
+                        notValid  = true;
+                        break;
+                    }
+            }
+
+            if(notValid)
+                continue;
+
             chosenCoins.Add(cn);
         }
 

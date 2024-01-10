@@ -2,8 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using Unity.VisualScripting;
-using UnityEditor.TerrainTools;
 
 public class Solution: IDisposable
 {
@@ -12,6 +10,7 @@ public class Solution: IDisposable
     public List<List<int>> Sequences;
     public List<int> DifferentLegnghts;
     public List<int> DifferentCoins;
+    public int bestLen;
 
     public bool HasSolution => Sequences.Count != 0;
 
@@ -29,6 +28,7 @@ public class Solution: IDisposable
         DifferentLegnghts.Clear();
         foreach(var l in Sequences)
             l.Clear();
+        Sequences.Clear();
     }
 
     public void FillFromSolutionWithCoin(Solution sol, int newCoin)
@@ -102,6 +102,14 @@ public class Solution: IDisposable
         }
 
         DifferentLegnghts.AddRange(existedCoins);
+        bestLen = 999;
+
+        foreach(var s in DifferentLegnghts)
+        {
+            bestLen = s > bestLen ? bestLen : s;
+        }
+
+        bestLen = bestLen == 999 ? 0 : bestLen;
 
         foreach(List<int> l in Sequences){
             existedCoins = new HashSet<int>(l);
@@ -115,11 +123,12 @@ public class Solution: IDisposable
 
         sb.Append($"--------------- SUM {Sum} SOLUTION");
         sb.Append($" DIFFERENT LENGHTS ----------------");
+        DifferentLegnghts.Sort();
 
         foreach(var d in DifferentLegnghts)
             sb.Append($"{d}, ");
 
-        sb.Append($" [COUNT {DifferentLegnghts.Count}]----------------");
+        sb.Append($" [COUNT {DifferentLegnghts.Count}]----------------[BEST {bestLen}]");
 
         sb.Append("---------------\n");
 
@@ -127,7 +136,7 @@ public class Solution: IDisposable
             foreach(int n in Sequences[i])
                 sb.Append($"{n.ToString()}\t");
 
-            sb.Append($" --> coins: {Sequences[i].Count} ({DifferentCoins[i]})\n");
+            sb.Append($" --> coins: {Sequences[i].Count} ({DifferentCoins[i]}) {(Sequences[i].Count == bestLen ? " >>>>>>>>>>>> BEST" : "")}\n");
         }
         return sb.ToString();
     }

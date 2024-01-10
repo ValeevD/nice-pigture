@@ -1,21 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
-using UnityEngine;
 
 public class GeneratorTester
 {
     public int coinMin = 5;
     public int coinMax = 25;
     public int coinNumber = 5;
-    public int maxSolutionValue = 80;
+    public int maxSolutionValue = 120;
+
+    public GeneratorTester()
+    {
+    }
 
     //[ContextMenu("Generate")]
     public void Generate()
     {
-        SolutionGenerator solutionGenerator = new SolutionGenerator();
+        // var chosenCoins = solutionGenerator.GenerateCoinsFromDiap(coinMin, coinMax, coinNumber);
 
-        var chosenCoins = solutionGenerator.GenerateCoinsFromDiap(coinMin, coinMax, coinNumber);
+        SolutionGenerator solutionGenerator = new SolutionGenerator(coinMin, coinMax, coinNumber, maxSolutionValue);
+        (List<int>, List<Solution>) solutionPair = solutionGenerator.GenerateSolutions();
+        Console.WriteLine($"Coins {LogList(solutionPair.Item1)}");
+        LogAllSolutions(solutionPair.Item2);
     }
 
     public string LogList<T>(List<T> list)
@@ -45,13 +52,13 @@ public class GeneratorTester
             builder.Append("\n");
         }
 
-        Debug.Log(builder.ToString());
+        Console.WriteLine(builder.ToString());
     }
 
-    public void LogAllSolutions(Solution[] allSolutions){
+    public void LogAllSolutions(List<Solution> allSolutions){
         foreach(var l in allSolutions)
         {
-            Debug.Log(l.ToString());
+            Console.WriteLine(l.ToString());
         }
     }
 }
