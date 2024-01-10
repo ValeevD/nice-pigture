@@ -10,6 +10,7 @@ public class Solution: IDisposable
     public List<List<int>> Sequences;
     public List<int> DifferentLegnghts;
     public List<int> DifferentCoins;
+    public List<int> Coins;
     public int bestLen;
 
     public bool HasSolution => Sequences.Count != 0;
@@ -121,6 +122,7 @@ public class Solution: IDisposable
     {
         StringBuilder sb = new StringBuilder();
 
+        //sb.Append($"<<<< Coins {Coins} >>>>>");
         sb.Append($"--------------- SUM {Sum} SOLUTION");
         sb.Append($" DIFFERENT LENGHTS ----------------");
         DifferentLegnghts.Sort();

@@ -7,6 +7,7 @@ public class ViewDirector : MonoBehaviour
     private SolutionGenerator _generator;
     private List<Solution> _allSolutions;
     private Solution _bestSolution;
+    private List<int> _allCoins;
 
     private AvailableCoinsView _allCoinsView;
     private PigView _pigView;
@@ -16,16 +17,19 @@ public class ViewDirector : MonoBehaviour
         _allCoinsView = GetComponentInChildren<AvailableCoinsView>();
         _pigView = GetComponentInChildren<PigView>();
 
-        _generator = new SolutionGenerator();
 
         int coinMin = 5;
         int coinMax = 25;
         int coinNumber = 5;
         int maxSolutionValue = 80;
 
-         _generator.GenerateSolutions(coinMin, coinMax, coinNumber, maxSolutionValue);
+        SolutionGenerator solutionGenerator = new SolutionGenerator(coinMin, coinMax, coinNumber, maxSolutionValue);
+        (List<int>, List<Solution>) solutionPair = solutionGenerator.GenerateSolutions();
+         //_generator.GenerateSolutions(coinMin, coinMax, coinNumber, maxSolutionValue);
+        _allCoins = solutionPair.Item1;
+        _allSolutions = solutionPair.Item2;
 
-         _allSolutions = _generator.allSolutions;
+        //List<Solution> allSolutions = _generator.GenerateSolutions(coinMin, coinMax, coinNumber, maxSolutionValue);
 
         int solIndex = _allSolutions.Count;
 
@@ -59,7 +63,7 @@ public class ViewDirector : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _allCoinsView.AddCoins(_generator.allCoins);
+        _allCoinsView.AddCoins(_allCoins);
         _pigView.SetSum(_bestSolution.Sum);
 
         Debug.Log(_bestSolution);

@@ -11,6 +11,11 @@ public class SolutionGenerator
 
     public SolutionGenerator(int coinMin, int coinMax, int coinNumber, int maxSolutionValue)
     {
+        SetSettings(coinMin, coinMax, coinNumber, maxSolutionValue);
+    }
+
+    public void SetSettings(int coinMin, int coinMax, int coinNumber, int maxSolutionValue)
+    {
         _coinMin = coinMin;
         _coinMax = coinMax;
         _coinNumber = coinNumber;
@@ -55,7 +60,17 @@ public class SolutionGenerator
             curSolution.CutSolution();
         }
 
-        List<Solution> solves = new List<Solution>(allSolutions);
+        List<Solution> solves = new List<Solution>();
+
+        foreach(var s in allSolutions)
+        {
+            if(s.HasSolution && s.DifferentLegnghts.Count >= 3)
+            {
+                solves.Add(s);
+                s.Coins = new List<int>(coins);
+            }
+        }
+
         return solves;
     }
 
