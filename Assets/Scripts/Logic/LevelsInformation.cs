@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+//using UnityEngine;
 
-public class LevelsInformation : MonoBehaviour
+LevelsInformation lvlInfo = new LevelsInformation();
+
+public class LevelsInformation
 {
     private SolutionGenerator _generator;
 
-    [ContextMenu("Show Level")]
+    //[ContextMenu("Show Level")]
     void ShowLevel()
     {
         _generator = new SolutionGenerator(5, 15, 3, 33);
@@ -29,8 +31,8 @@ public class LevelsInformation : MonoBehaviour
         }
             if(bestSolution != null)
             {
-                Debug.Log($"Coins {GeneratorTester.LogList(bestSolution.Coins)}");
-                Debug.Log(bestSolution.ToString());
+                Console.WirteLine($"Coins {GeneratorTester.LogList(bestSolution.Coins)}");
+                Console.WirteLine(bestSolution.ToString());
             }
     }
 }
