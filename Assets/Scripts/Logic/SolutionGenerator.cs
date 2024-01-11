@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -93,23 +94,23 @@ public class SolutionGenerator
         {
             int cn = coins[curCoin++];
 
-            bool notValid = false;
+            // bool notValid = false;
 
-            foreach(var c1 in chosenCoins)
-            {
-                if(notValid)
-                    break;
+            // foreach(var c1 in chosenCoins)
+            // {
+            //     if(notValid)
+            //         break;
 
-                foreach(var c2 in chosenCoins)
-                    if(cn == c1 + c2 || c1 == cn + c2 || c2 == c1 + cn)
-                    {
-                        notValid  = true;
-                        break;
-                    }
-            }
+            //     foreach(var c2 in chosenCoins)
+            //         if(cn == c1 + c2 || c1 == cn + c2 || c2 == c1 + cn)
+            //         {
+            //             notValid  = true;
+            //             break;
+            //         }
+            // }
 
-            if(notValid)
-                continue;
+            // if(notValid)
+            //     continue;
 
             chosenCoins.Add(cn);
         }

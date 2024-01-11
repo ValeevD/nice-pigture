@@ -12,6 +12,7 @@ public class Solution: IDisposable
     public List<int> DifferentCoins;
     public List<int> Coins;
     public int bestLen;
+    public int bestDifCoins;
 
     public bool HasSolution => Sequences.Count != 0;
 
@@ -21,6 +22,7 @@ public class Solution: IDisposable
         Sequences = new List<List<int>>();
         DifferentLegnghts = new List<int>();
         DifferentCoins = new List<int>();
+        Coins = new List<int>();
     }
 
     public void Dispose()
@@ -104,18 +106,34 @@ public class Solution: IDisposable
 
         DifferentLegnghts.AddRange(existedCoins);
         bestLen = 999;
+        List<int> bestLenIndexes = new List<int>();
 
         foreach(var s in DifferentLegnghts)
         {
-            bestLen = s > bestLen ? bestLen : s;
+            if(bestLen > s)
+                bestLen = s;
+        }
+
+        for(int i = 0; i < DifferentLegnghts.Count; ++i)
+        {
+            var s = DifferentLegnghts[i];
+
+            if(s == bestLen)
+                bestLenIndexes.Add(i);
         }
 
         bestLen = bestLen == 999 ? 0 : bestLen;
+        bestDifCoins = 999;
 
         foreach(List<int> l in Sequences){
             existedCoins = new HashSet<int>(l);
             DifferentCoins.Add(existedCoins.Count);
+
+            if(l.Count == bestLen)
+                bestDifCoins = bestDifCoins > existedCoins.Count ? existedCoins.Count : bestDifCoins;
         }
+
+        bestDifCoins = bestDifCoins == 999 ? 0 : bestDifCoins;
     }
 
     public override string ToString()
