@@ -10,6 +10,11 @@ public class SolutionGenerator
     private int _coinNumber;
     private int _maxSolutionValue;
 
+    public SolutionGenerator()
+    {
+
+    }
+
     public SolutionGenerator(int coinMin, int coinMax, int coinNumber, int maxSolutionValue)
     {
         SetSettings(coinMin, coinMax, coinNumber, maxSolutionValue);
