@@ -1,9 +1,9 @@
 using System;
 // using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+// using UnityEngine;
 
-public class LevelsInformation : MonoBehaviour
+public class LevelsInformation
 {
     struct GenSettings
     {
@@ -25,7 +25,7 @@ public class LevelsInformation : MonoBehaviour
 
     private SolutionGenerator? _generator;
 
-    [ContextMenu("Show Level")]
+    //[ContextMenu("Show Level")]
     public void ShowLevel()
     {
         _generator = new SolutionGenerator();
@@ -45,7 +45,7 @@ public class LevelsInformation : MonoBehaviour
         for(int k = 0; k < generatorSettings.Count; ++k)
         {
             GenSettings set = generatorSettings[k];
-            Debug.Log($"----------------LEVEL {k + 3} ----------------");
+            Console.WriteLine($"----------------LEVEL {k + 3} ----------------");
 
             for(int x = 0; x < set.lvlCount; ++x)
             {
@@ -56,16 +56,25 @@ public class LevelsInformation : MonoBehaviour
 
                 while(n-- > 0)
                 {
-                    _generator.SetSettings(set.minCoin, set.maxCoin, set.coinsCount, set.levelSum + 5 * x);
+                    int currentSum = set.levelSum + 5 * x;
+                    _generator.SetSettings(set.minCoin, set.maxCoin, set.coinsCount, currentSum);
 
                     (List<int>, List<Solution>) solutionInformation = _generator.GenerateSolutions();
+
+                    int sum = 0;
+
+                    foreach(var q in solutionInformation.Item1)
+                        sum += q;
 
                     foreach(var s in solutionInformation.Item2)
                     {
                         if(s == null)
                             continue;
 
-                        if(s.HasSolution && s.DifferentLegnghts.Count >= 2 && s.bestLen >= bestLen && s.bestDifCoins > bestDifCoins)
+                        if(s.Sum == sum)
+                            continue;
+
+                        if(s.HasSolution && s.DifferentLegnghts.Count >= 3 && s.bestLen >= bestLen && s.bestDifCoins > bestDifCoins)
                         {
                             bestSolution = s;
                             bestLen = s.bestLen;
@@ -80,12 +89,8 @@ public class LevelsInformation : MonoBehaviour
 
                 if(bestSolution != null)
                 {
-                    // Debug.Log($"Coins {GeneratorTester.LogList(bestSolution.Coins)}");
-                    // Debug.Log($"bestlen = {bestSolution.bestLen}, bestDifCoins = {bestSolution.bestDifCoins}");
-                    // Debug.Log(bestSolution.ToString());
-
-                    Debug.Log($"Sub level: {x + 1} \n Coins {GeneratorTester.LogList(bestSolution.Coins)} \n bestlen = {bestSolution.bestLen}, bestDifCoins = {bestSolution.bestDifCoins} \n {bestSolution.ToString()}");
-
+                    //Console.WriteLine($"Sub level: {x + 1} \n Coins {GeneratorTester.LogList(bestSolution.Coins)} \n bestlen = {bestSolution.bestLen}, bestDifCoins = {bestSolution.bestDifCoins} \n {bestSolution.ToString()}");
+                    Console.WriteLine($"Sub level: {x + 1} \n {bestSolution.LvlSettingsToString()}");
                 }
             }
         }
